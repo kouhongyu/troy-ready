@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.troy.manage.mapper.ResourceMapper">
+
+    <!--<cache/>-->
+    <select id="selectResourceMethodRoleVOList" parameterType="org.troy.core.common.PagingTool"
+            resultType="org.troy.manage.vo.ResourceMethodRoleVO">
+        SELECT m.*,(CASE WHEN temp.roleid IS NULL THEN 0 ELSE 1 END) as checked
+        FROM T_RESOURCE_method m LEFT JOIN (SELECT * FROM T_PERMISSION_ROLE_method ra WHERE ra.roleid=#{parameterMap.roleid}) temp ON m.url = temp.url
+        <where>
+              m.effective=1
+            <if test="parameterMap.methodname != null and parameterMap.methodname != ''">
+                methodname LIKE CONCAT('%',#{parameterMap.methodname},'%')
+            </if>
+            <if test="parameterMap.methodpath != null and parameterMap.methodpath != ''">
+                AND methodpath LIKE CONCAT('%',#{parameterMap.methodpath},'%')
+            </if>
+            <if test="parameterMap.url != null and parameterMap.url != ''">
+                AND url = #{parameterMap.url}
+            </if>
+        </where>
+        <if test="sortField != null and sortOrder != null">
+            ORDER BY ${sortField} ${sortOrder}
+        </if>
+        LIMIT #{startIndex},#{pageSize}
+    </select>
+    <select id="selectResourceMethodRoleVOTotal" parameterType="java.lang.Long" resultType="int">
+        SELECT COUNT(1) c
+        FROM T_RESOURCE_method m LEFT JOIN (SELECT * FROM T_PERMISSION_ROLE_method ra WHERE ra.roleid=#{roleid}) temp ON m.url = temp.url
+        <where>
+              m.effective=1
+            <if test="methodname != null and methodname != ''">
+                AND methodname LIKE concat('%',#{methodname},'%')
+            </if>
+            <if test="methodpath != null and methodpath != ''">
+                AND methodpath LIKE concat('%',#{methodpath},'%')
+            </if>
+            <if test="url != null and url != ''">
+                AND url =#{url}
+            </if>
+        </where>
+    </select>
+    <select id="selectResourceMethod" parameterType="int" resultType="org.troy.manage.entity.ResourceMethod">
+        SELECT * FROM T_RESOURCE_method WHERE url=#{url}
+    </select>
+    <select id="selectResourceMenu" parameterType="int" resultType="org.troy.manage.entity.ResourceMenu">
+        SELECT * FROM T_RESOURCE_MENU WHERE id=#{id}
+    </select>
+    <select id="selectResourceMenuByMenucode" parameterType="java.lang.String" resultType="org.troy.manage.entity.ResourceMenu">
+        SELECT * FROM T_RESOURCE_MENU WHERE menucode=#{menucode}
+    </select>
+    <select id="selectResourceMenuRootList" resultMap="ResourceMenuResult">
+        SELECT * FROM T_RESOURCE_MENU WHERE LENGTH(menucode)=4
+    </select>
+
+
+    <resultMap id="ResourceMenuResult" type="org.troy.manage.entity.ResourceMenu">
+        <id property="id" column="id"/>
+        <result property="menucode" column="menucode"/>
+        <result property="text" column="text"/>
+        <result property="url" column="url"/>
+        <result property="effective" column="effective"/>
+        <result property="parameter" column="parameter"/>
+        <result property="description" column="description"/>
+        <association property="resourceMenuList" column="menucode" select="selectResourceMenuList"/>
+    </resultMap>
+
+    <select id="selectResourceMenuList" parameterType="java.lang.String" resultMap="ResourceMenuResult">
+        SELECT *
+        FROM T_RESOURCE_MENU
+        WHERE menucode LIKE concat(#{menucode},'%')
+            AND LENGTH(menucode)=LENGTH(#{menucode})+4
+        order by menucode
+    </select>
+    <select id="selectResourceMethodList" parameterType="org.troy.core.common.PagingTool"
+            resultType="org.troy.manage.entity.ResourceMethod">
+        SELECT * FROM T_RESOURCE_method
+        <where>
+            <if test="parameterMap.methodname != null and parameterMap.methodname != ''">
+                methodname LIKE CONCAT('%',#{parameterMap.methodname},'%')
+            </if>
+            <if test="parameterMap.methodpath != null and parameterMap.methodpath != ''">
+                AND methodpath LIKE CONCAT('%',#{parameterMap.methodpath},'%')
+            </if>
+            <if test="parameterMap.url != null and parameterMap.url != ''">
+                AND url = #{parameterMap.url}
+            </if>
+            <if test="parameterMap.effective != null">
+                AND effective = #{parameterMap.effective}
+            </if>
+        </where>
+        <if test="sortField != null and sortOrder != null">
+            ORDER BY ${sortField} ${sortOrder}
+        </if>
+        LIMIT #{startIndex},#{pageSize}
+    </select>
+    <select id="selectResourceMethodTotal" parameterType="org.troy.manage.entity.ResourceMethod" resultType="int">
+        SELECT COUNT(1) c FROM T_RESOURCE_method
+        <where>
+            <if test="methodname != null and methodname != ''">
+                methodname LIKE concat('%',#{methodname},'%')
+            </if>
+            <if test="methodpath != null and methodpath != ''">
+                AND methodpath LIKE concat('%',#{methodpath},'%')
+            </if>
+             <if test="url != null and url != ''">
+                AND url =#{url}
+            </if>
+            <if test="effective != null">
+                AND effective = #{effective}
+            </if>
+        </where>
+    </select>
+    <insert id="insertResourceMethod" parameterType="org.troy.manage.entity.ResourceMethod"
+            useGeneratedKeys="true" keyProperty="url">
+         INSERT INTO T_RESOURCE_method
+        (methodname, methodpath,effective,description)
+        VALUES
+        (#{methodname}, #{methodpath},#{effective},#{description})
+    </insert>
+    <delete id="deleteResourceMethod" parameterType="org.troy.manage.entity.ResourceMethod">
+        DELETE FROM T_RESOURCE_method WHERE url = #{url}
+    </delete>
+    <update id="updateResourceMethod" parameterType="org.troy.manage.entity.ResourceMethod">
+        UPDATE T_RESOURCE_method
+        SET methodname  = #{methodname},
+            methodpath  = #{methodpath},
+            effective   = #{effective},
+            description = #{description}
+        WHERE url = #{url}
+    </update>
+    <select id="selectParentResourceMenu" parameterType="java.lang.String" resultType="org.troy.manage.entity.ResourceMenu">
+          SELECT * FROM T_RESOURCE_MENU WHERE menucode=#{menucode}
+    </select>
+    <update id="updateResourceMenu" parameterType="org.troy.manage.entity.ResourceMenu">
+        UPDATE T_RESOURCE_MENU
+        SET menucode    = #{menucode},
+            text    = #{text},
+            url    = #{url},
+            effective   = #{effective},
+            parameter   = #{parameter},
+            description = #{description}
+        WHERE id = #{id}
+    </update>
+    <select id="selectRootMenucodeMax" resultType="java.lang.String">
+        SELECT MAX(menucode) AS menucode FROM T_RESOURCE_MENU WHERE LENGTH(menucode)=4
+    </select>
+    <insert id="insertResourceMenu" parameterType="org.troy.manage.entity.ResourceMenu" 
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO T_RESOURCE_MENU
+          (menucode,text,url,effective,parameter,description)
+        VALUES
+          (#{menucode},#{text},#{url},#{effective},#{parameter},#{description})
+    </insert>
+    <select id="selectNodeMenucodeMax" parameterType="org.troy.manage.entity.ResourceMenu" resultType="java.lang.String">
+        SELECT MAX(menucode) AS menucode
+        FROM T_RESOURCE_MENU
+        WHERE menucode LIKE concat(#{menucode},'%')
+          AND LENGTH(menucode)=LENGTH(#{menucode})+4
+    </select>
+    <delete id="deleteResourceMenu" parameterType="org.troy.manage.entity.ResourceMenu">
+        DELETE FROM T_RESOURCE_MENU WHERE id=#{id}
+    </delete>
+</mapper>

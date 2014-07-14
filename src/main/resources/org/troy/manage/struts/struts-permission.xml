@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+
+    <package name="menuTree" namespace="/manage/tree" extends="manage">
+        <action name="loadMenu" class="org.troy.manage.action.MenuAction" method="loadMenu">
+            <result name="success" type="json">
+                <param name="root">menuJson</param>
+            </result>
+        </action>
+        <action name="toTab" method="toTab" class="org.troy.manage.action.MenuAction">
+            <result name="success" type="redirect">
+                ${toAction}${parameter}
+            </result>
+        </action>
+    </package>
+
+    <package name="permission" namespace="/manage/permission" extends="manage">
+
+        <action name="editResourceMenu" class="org.troy.manage.action.ResourceMenuAction" method="editResourceMenu">
+            <result name="success">
+                /WEB-INF/pages/manage/menu_edit.jsp
+            </result>
+        </action>
+
+
+        <action name="adminUserList" class="org.troy.manage.action.AdminUserAction" method="adminUserList">
+            <result name="success">
+                /WEB-INF/pages/manage/admin_user_list.jsp
+            </result>
+        </action>
+        <action name="getAdminUserAjax" class="org.troy.manage.action.AdminUserAction" method="getAdminUserAjax">
+            <result name="success" type="json">
+                <param name="root">json</param>
+            </result>
+        </action>
+        <action name="addAdminUserAjax" class="org.troy.manage.action.AdminUserAction" method="addAdminUserAjax">
+            <result name="success" type="json">
+                <param name="root">json</param>
+            </result>
+        </action>
+        <action name="removeAdminUserAjax" class="org.troy.manage.action.AdminUserAction" method="removeAdminUserAjax">
+            <result name="success" type="json">
+                <param name="root">json</param>
+            </result>
+        </action>
+        <action name="saveAdminUserAjax" class="org.troy.manage.action.AdminUserAction" method="saveAdminUserAjax">
+            <result name="success" type="json">
+                <param name="root">json</param>
+            </result>
+        </action>
+        <action name="resourceActionList" class="org.troy.manage.action.ResourceMethodAction" method="resourceActionList">
+            <result name="success" type="json">
+                <param name="root">json</param>
+            </result>
+        </action>
+        <action name="saveResourceAction" class="org.troy.manage.action.ResourceMethodAction" method="saveResourceAction">
+            <result name="success" type="json">
+                <param name="root">json</param>
+            </result>
+        </action>
+        <action name="removeResourceAction" class="org.troy.manage.action.ResourceMethodAction" method="removeResourceAction">
+            <result name="success" type="json">
+                <param name="root">json</param>
+            </result>
+        </action>
+
+        <action name="resourceMenuList" class="org.troy.manage.action.ResourceMenuAction" method="resourceMenuList">
+            <result name="success" type="json">
+                <param name="root">menuJson</param>
+            </result>
+        </action>
+        <action name="getResourceMenuAjax" class="org.troy.manage.action.ResourceMenuAction" method="getResourceMenuAjax">
+            <result name="success" type="json">
+                <param name="root">json</param>
+            </result>
+        </action>
+        <action name="saveResourceMenuAjax" class="org.troy.manage.action.ResourceMenuAction" method="saveResourceMenuAjax">
+            <result name="success" type="json">
+                <param name="root">json</param>
+            </result>
+        </action>
+        <action name="addResourceMenuAjax" class="org.troy.manage.action.ResourceMenuAction" method="addResourceMenuAjax">
+            <result name="success" type="json">
+                <param name="root">json</param>
+            </result>
+        </action>
+        <action name="removeResourceMenuAjax" class="org.troy.manage.action.ResourceMenuAction" method="removeResourceMenuAjax">
+            <result name="success" type="json">
+                <param name="root">json</param>
+            </result>
+        </action>
+
+        <action name="roleListAjax" class="org.troy.manage.action.RoleAction" method="roleList">
+            <result name="success" type="json">
+                <param name="root">json</param>
+            </result>
+        </action>
+        <action name="addRoleAjax" class="org.troy.manage.action.RoleAction" method="addPermissionRole">
+            <result name="success" type="json">
+                <param name="root">json</param>
+            </result>
+        </action>
+        <action name="getRoleAjax" class="org.troy.manage.action.RoleAction" method="getPermissionRole">
+            <result name="success" type="json">
+                <param name="root">json</param>
+            </result>
+        </action>
+        <action name="saveRoleAjax" class="org.troy.manage.action.RoleAction" method="savePermissionRole">
+            <result name="success" type="json">
+                <param name="root">json</param>
+            </result>
+        </action>
+        <action name="getResourceMenuListByRoleidAjax" class="org.troy.manage.action.RoleAction" method="getResourceMenuListByRoleid">
+            <result name="success" type="json">
+                <param name="root">json</param>
+            </result>
+        </action>
+        <action name="addRoleMenuAjax" class="org.troy.manage.action.RoleAction" method="addRoleMenu">
+            <result name="success" type="json">
+                <param name="root">json</param>
+            </result>
+        </action>
+        <action name="removeRoleMenuAjax" class="org.troy.manage.action.RoleAction" method="removeRoleMenu">
+            <result name="success" type="json">
+                <param name="root">json</param>
+            </result>
+        </action>
+        <action name="getResourceActionRoleVOListByRoleid" class="org.troy.manage.action.RoleAction" method="getResourceActionRoleVOListByRoleid">
+            <result name="success" type="json">
+                <param name="root">json</param>
+            </result>
+        </action>
+
+    </package>
+</struts>

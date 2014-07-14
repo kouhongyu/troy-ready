@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+
+    <package name="manage" namespace="/manage" extends="json-default">
+
+        <interceptors>
+            <interceptor name="permissionInterceptor"
+                         class="org.troy.manage.interceptor.PermissionInterceptor"/>
+
+            <interceptor-stack name="manageInterceptorStack">
+                <interceptor-ref name="permissionInterceptor"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="manageInterceptorStack"/>
+
+    </package>
+
+
+
+    <include file="org/troy/manage/struts/struts-permission.xml"/>
+    <include file="org/troy/manage/struts/struts-frame.xml"/>
+    <include file="org/troy/manage/struts/struts-test.xml"/>
+
+</struts>

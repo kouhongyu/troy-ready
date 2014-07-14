@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.troy.manage.mapper.PermissionMapper">
+
+    <!--<cache/>-->
+
+    <select id="selectPermissionRoleMethod" parameterType="org.troy.manage.entity.PermissionRoleMethod" resultType="org.troy.manage.entity.PermissionRoleMethod">
+        SELECT * FROM t_permission_role_method WHERE roleid=#{roleid} AND url=#{url}
+    </select>
+
+    <delete id="deletePermissionRoleMenu" parameterType="org.troy.manage.entity.PermissionRoleMenu">
+        DELETE FROM T_PERMISSION_ROLE_MENU WHERE roleid=#{roleid} AND menuid=#{menuid}
+    </delete>
+    <insert id="insertPermissionRoleMenu" parameterType="org.troy.manage.entity.PermissionRoleMenu">
+        INSERT INTO T_PERMISSION_ROLE_MENU(roleid,menuid) VALUES(#{roleid},#{menuid})
+    </insert>
+
+    <select id="selectResourceMenuListByRoleid" parameterType="java.lang.Long" resultType="org.troy.manage.entity.ResourceMenu">
+        SELECT m.* FROM t_resource_menu m,t_permission_role_menu rm WHERE m.menuid=rm.menuid AND rm.roleid=#{roleid}
+    </select>
+
+    <select id="selectPermissionRole" parameterType="java.lang.Long" resultType="org.troy.manage.entity.PermissionRole">
+        SELECT * FROM T_PERMISSION_ROLE WHERE roleid = #{roleid}
+    </select>
+
+    <insert id="insertPermissionRole" parameterType="org.troy.manage.entity.PermissionRole"
+            useGeneratedKeys="true" keyProperty="roleid">
+         INSERT INTO T_PERMISSION_ROLE(rolename) VALUES(#{rolename})
+    </insert>
+    <update id="updatePermissionRole" parameterType="org.troy.manage.entity.PermissionRole">
+        UPDATE T_PERMISSION_ROLE
+        SET rolename = #{rolename}
+        WHERE roleid = #{roleid}
+    </update>
+
+    <select id="selectPermissionRoleList" parameterType="org.troy.core.common.PagingTool"
+            resultType="org.troy.manage.entity.PermissionRole">
+        SELECT * FROM T_PERMISSION_ROLE
+        <where>
+            <if test="parameterMap.rolename != null and parameterMap.rolename != ''">
+                rolename LIKE CONCAT('%',#{parameterMap.rolename},'%')
+            </if>
+        </where>
+        <if test="sortField != null and sortOrder != null">
+            ORDER BY ${sortField} ${sortOrder}
+        </if>
+        LIMIT #{startIndex},#{pageSize}
+    </select>
+    <select id="selectPermissionRoleTotal" parameterType="org.troy.manage.entity.PermissionRole" resultType="int">
+        SELECT COUNT(1) c FROM T_PERMISSION_ROLE
+        <where>
+            <if test="rolename != null and rolename != ''">
+                AND rolename LIKE concat('%',#{rolename},'%')
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.troy.manage.mapper.AdminUserMapper">
+
+    <!--<cache/>-->
+
+    <delete id="deleteAdminUser" parameterType="java.lang.Long">
+        delete FROM T_ADMIN_USER WHERE adminid = #{adminid}
+    </delete>
+    <insert id="insertAdminUser" parameterType="org.troy.manage.entity.AdminUser"
+            useGeneratedKeys="true" keyProperty="adminid">
+         INSERT INTO T_ADMIN_USER
+        (username, password,effective,email)
+        VALUES
+        (#{username}, #{password},#{effective},#{email})
+    </insert>
+    <update id="updateAdminUser" parameterType="org.troy.manage.entity.AdminUser">
+        UPDATE T_ADMIN_USER
+        SET username = #{username},
+            password = #{password},
+            effective = #{effective},
+            email= #{email}
+        WHERE adminid = #{adminid}
+    </update>
+    <select id="selectAdminUser" parameterType="java.lang.Long" resultType="org.troy.manage.entity.AdminUser">
+        SELECT * FROM T_ADMIN_USER WHERE adminid = #{adminid}
+    </select>
+    <select id="selectAdminUserList" parameterType="org.troy.core.common.Pagination" resultType="org.troy.manage.entity.AdminUser">
+        SELECT * FROM T_ADMIN_USER
+        LIMIT #{startIndex},#{pageSize}
+    </select>
+    <select id="selectAdminUserTotal" parameterType="org.troy.manage.entity.AdminUser" resultType="int">
+        SELECT COUNT(1) c FROM T_ADMIN_USER
+    </select>
+
+</mapper>

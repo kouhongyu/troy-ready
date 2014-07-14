@@ -1,0 +1,40 @@
+[{"text":".","children": [
+    {
+        task:'Project: Shopping',
+        duration:13.25,
+        user:'Tommy Maintz',
+        iconCls:'task-folder',
+        expanded: true,
+        children:[{
+            task:'Housewares',
+            duration:1.25,
+            user:'Tommy Maintz',
+            iconCls:'task-folder',
+            children:[{
+                task:'Kitchen supplies',
+                duration:0.25,
+                user:'Tommy Maintz',
+                leaf:true,
+                iconCls:'task'
+            },{
+                task:'Groceries',
+                duration:.4,
+                user:'Tommy Maintz',
+                leaf:true,
+                iconCls:'task'
+            },{
+                task:'Cleaning supplies',
+                duration:.4,
+                user:'Tommy Maintz',
+                leaf:true,
+                iconCls:'task'
+            },{
+                task: 'Office supplies',
+                duration: .2,
+                user: 'Tommy Maintz',
+                leaf: true,
+                iconCls: 'task'
+            }]
+        }]
+    }]
+}]
